@@ -5,7 +5,6 @@ interface User {
     name: string;
     age: number;
     phoneNumber: string;
-
 }
 interface UsersProps {
     users: User[];
