@@ -41,7 +41,7 @@ export default function Login() {
         const token = responseData.access_token;
         setCookie("user", token, {
             path: "/",
-            maxAge: 3600,
+            maxAge: 36000,
             sameSite: true,
         })
     };
