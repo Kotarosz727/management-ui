@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 interface LoginForm {
     username: string;
@@ -8,7 +9,12 @@ interface LoginForm {
 }
 
 export default function Login() {
+    const [cookie, setCookie] = useCookies(["user"])
     const loginUrl = 'http://localhost:3000/auth/login';
+
+    interface LoginResponse {
+        access_token: string;
+    }
 
     const {
         register,
@@ -31,8 +37,13 @@ export default function Login() {
             setLoginError('Invalid username or password');
         }
 
-        const responseData = await response.json();
-        console.log(responseData);
+        const responseData: LoginResponse = await response.json();
+        const token = responseData.access_token;
+        setCookie("user", token, {
+            path: "/",
+            maxAge: 3600,
+            sameSite: true,
+        })
     };
 
     return (
@@ -69,7 +80,7 @@ export default function Login() {
                                 type="password"
                                 autoComplete="current-password"
                                 required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-90 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                 placeholder="Password"
                             />
                             {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
