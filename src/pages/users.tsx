@@ -39,6 +39,15 @@ export const getServerSideProps: GetServerSideProps = async(context) => {
         },
     });
 
+    if (!response.ok) {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            },
+        };
+    }
+
     const users = await response.json();
 
     return {
