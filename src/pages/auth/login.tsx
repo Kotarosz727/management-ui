@@ -1,6 +1,4 @@
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 interface LoginForm {
@@ -8,23 +6,27 @@ interface LoginForm {
     password: string;
 }
 
+interface LoginResponse {
+    access_token: string;
+}
+
 export default function Login() {
-    const [cookie, setCookie] = useCookies(["user"])
     const loginUrl = 'http://localhost:3000/auth/login';
 
-    interface LoginResponse {
-        access_token: string;
-    }
+    const [cookie, setCookie] = useCookies(["user"])
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<LoginForm>();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
-    const router = useRouter();
 
-    const onSubmit = async (data: LoginForm) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const data: LoginForm = {
+            username: username,
+            password: password
+        }
+
         const response = await fetch(loginUrl, {
             method: 'POST',
             headers: {
@@ -39,6 +41,7 @@ export default function Login() {
 
         const responseData: LoginResponse = await response.json();
         const token = responseData.access_token;
+
         setCookie("user", token, {
             path: "/",
             maxAge: 36000,
@@ -46,57 +49,58 @@ export default function Login() {
         })
     };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <h2 className="mt-6 text-center text-3xl font-bold text-white-900">Login</h2>
-                {loginError && <p className="text-red-500 text-xs text-center">{loginError}</p>}
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                    <input type="hidden" name="remember" value="true" />
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="username" className="sr-only">
-                                Email address
-                            </label>
-                            <input
-                                {...register('username', { required: 'username is required' })}
-                                id="username"
-                                name="username"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-90 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="username"
-                            />
-                            {errors.username && <p className="text-red-500 text-xs">{errors.username.message}</p>}
-                        </div>
+    const isFormValid = () => {
+        return username.trim() !== '' && password.trim() !== '';
+    };
 
-                        <div className="mt-2">
-                            <label htmlFor="password" className="sr-only">
-                                Password
-                            </label>
-                            <input
-                                {...register('password', { required: 'Password is required' })}
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-90 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                            />
-                            {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
+    return (
+        <div className="container items-center mx-auto max-w-md justify-center mt-[15rem]">
+            <form action="" className="space-y-5" onSubmit={onSubmit}>
+                {loginError && (
+                    <div className="grid grid-cols-3 items-center">
+                        <div className="col-span-2 col-start-2 text-red-500">
+                            {loginError}
                         </div>
                     </div>
-
-                    <div>
+                )}
+                <div className="grid grid-cols-3 items-center">
+                    <h2 className="col-span-2 col-start-2 text-3xl font-bold mb-5">Login</h2>
+                </div>
+                <div className="grid grid-cols-3 items-center">
+                    <label htmlFor="username"
+                           className="col-span-1 block text-sm font-medium text-gray-700">Name</label>
+                    <div className="col-span-2">
+                        <input id="username"
+                               value={username}
+                               onChange={(e) => setUsername(e.target.value)}
+                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+                               placeholder="username"/>
+                    </div>
+                </div>
+                <div className="grid grid-cols-3 items-center">
+                    <label htmlFor="password"
+                           className="col-span-1 block text-sm font-medium text-gray-700">Password</label>
+                    <div className="col-span-2">
+                        <input type="password"
+                               id="password"
+                               value={password}
+                               onChange={(e) => setPassword(e.target.value)}
+                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+                               placeholder="password"/>
+                    </div>
+                </div>
+                <div className="grid grid-cols-3 items-center">
+                    <div className="col-span-2 col-start-2">
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            disabled={!isFormValid()}
+                            className="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
                         >
-                            Login
+                            Submit
                         </button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     );
 };
