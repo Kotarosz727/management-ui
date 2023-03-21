@@ -10,7 +10,7 @@ export const FormInputItem: React.FC<FormInputItemProps> = ({ label, type = 'tex
     return (
         <div className="grid grid-cols-3 items-center">
             <label htmlFor={label}
-                   className="col-span-1 block text-sm font-medium text-gray-700">Password</label>
+                   className="col-span-1 block text-sm font-medium text-gray-700">{label}</label>
             <div className="col-span-2">
                 <input type={type}
                        id={label}

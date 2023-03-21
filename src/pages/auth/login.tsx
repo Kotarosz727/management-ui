@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
+import {useCookies} from 'react-cookie';
 import {FormButton} from "@/components/FormButton";
 import {FormInputItem} from "@/components/FormInputItem";
+import {ErrorAlert} from "@/components/ErrorAlert";
+import {SuccessAlert} from "@/components/SuccessAlert";
 
 interface LoginForm {
     username: string;
@@ -20,6 +22,7 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
+    const [loginSuccess, setLoginSuccess] = useState('');
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -38,7 +41,10 @@ export default function Login() {
         });
 
         if (!response.ok) {
-            setLoginError('Invalid username or password');
+            if (response.status === 401) {
+                setLoginError('Invalid username or password');
+            }
+            return;
         }
 
         const responseData: LoginResponse = await response.json();
@@ -49,6 +55,8 @@ export default function Login() {
             maxAge: 36000,
             sameSite: true,
         })
+
+        setLoginSuccess('Login successful');
     };
 
     const isFormValid = () => {
@@ -59,11 +67,10 @@ export default function Login() {
         <div className="container items-center mx-auto max-w-md justify-center mt-[15rem]">
             <form action="" className="space-y-5" onSubmit={onSubmit}>
                 {loginError && (
-                    <div className="grid grid-cols-3 items-center">
-                        <div className="col-span-2 col-start-2 text-red-500">
-                            {loginError}
-                        </div>
-                    </div>
+                    <ErrorAlert message={loginError} onClick={() => setLoginError('')}></ErrorAlert>
+                )}
+                {loginSuccess && (
+                    <SuccessAlert message={loginSuccess} onClick={() => setLoginSuccess('')}></SuccessAlert>
                 )}
                 <div className="grid grid-cols-3 items-center">
                     <h2 className="col-span-2 col-start-2 text-3xl font-bold mb-5">Login</h2>
