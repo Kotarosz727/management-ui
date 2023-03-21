@@ -1,4 +1,21 @@
-export default function Kanbans() {
+import {GetServerSideProps} from "next";
+import cookie from "cookie";
+import {IKanbans} from "@/types/kanbans/types";
+import {useState} from "react";
+
+interface KanbansProps {
+    todos: IKanbans[];
+    inProgress: IKanbans[];
+    done: IKanbans[];
+}
+export default function Kanbans({ todos: initialTodos, inProgress: initialInProgress, done: initialDone }: KanbansProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [todos, setTodos] = useState(initialTodos);
+    const [inProgress, setInProgress] = useState(initialInProgress);
+    const [done, setDone] = useState(initialDone);
+
     const checkMarkIcon = (
         <>
             <div className="p-2">
@@ -19,6 +36,91 @@ export default function Kanbans() {
         </>
     )
 
+    const isValid = () => {
+        return name.trim() !== '' && description.trim() !== '';
+    }
+
+    const addTodo = async () => {
+        const res = await fetch('http://localhost:3000/kanbans', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name,
+                description
+            })
+        })
+
+        if (!res.ok) {
+            throw new Error('Something went wrong');
+        }
+
+        setIsModalOpen(false);
+        await fetchKanbans();
+    }
+
+    const fetchKanbans = async () => {
+        const res = await fetch('http://localhost:3000/kanbans');
+        const kanbans = await res.json();
+        setTodos(kanbans.filter((kanban: IKanbans) => kanban.status === 0));
+        setInProgress(kanbans.filter((kanban: IKanbans) => kanban.status === 1));
+        setDone(kanbans.filter((kanban: IKanbans) => kanban.status === 2));
+    }
+
+    const addTodoModal = (
+        <>
+            <div className="h-100">
+                <div>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+                        <div className="mx-auto overflow-hidden rounded-lg bg-white shadow-xl w-[700px] sm:max-w-sm">
+                            <div className="relative p-5">
+                                <div className="absolute right-0 top-0 p-2">
+                                    <button onClick={() => setIsModalOpen(false)}>{closeIcon}</button>
+                                </div>
+                                <div className="text-center mt-8">
+                                    <div>
+                                        <div className="mx-auto max-w-xs">
+                                            <div>
+                                                <label htmlFor="example1"
+                                                       className="mb-1 block text-sm font-bold text-gray-700">Title</label>
+                                                <input type="text"
+                                                       id="name"
+                                                       className="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+                                                       placeholder="todo title"
+                                                       onChange={(e) =>setName(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="mx-auto max-w-xs mt-8">
+                                            <div>
+                                                <label htmlFor="5"
+                                                       className="mb-1 block text-sm font-bold text-gray-700">Description</label>
+                                                <textarea id="description"
+                                                          className="py-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
+                                                          rows={2}
+                                                          placeholder="todo description"
+                                                          onChange={(e) =>setDescription(e.target.value) }
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-5 flex justify-end gap-3">
+                                    <button disabled={!isValid()} type="button" onClick={() => addTodo()}
+                                            className="flex-1 rounded-lg border border-primary-500 bg-primary-500 px-4 py-2 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300">Add To Do
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+
     return (
         <div className="container mx-auto h-[100%]">
             <h1 className="text-2xl font-bold">Kanbans</h1>
@@ -27,19 +129,23 @@ export default function Kanbans() {
                     <div className="font-bold text-xl p-2">
                         To Do
                     </div>
-                    <div className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto">
-                        <div className="flex justify-between items-center">
-                            <button onClick={() => alert('hello')}>{checkMarkIcon}</button>
-                            <button onClick={() => alert('close')}>{closeIcon}</button>
+
+                    {todos && todos.map((todo) => (
+                        <div key={todo.id} className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto mt-6">
+                            <div className="flex justify-between items-center">
+                                <button onClick={() => alert('hello')}>{checkMarkIcon}</button>
+                                <button onClick={() => alert('close')}>{closeIcon}</button>
+                            </div>
+                            <div className="flex justify-center">
+                                {todo.name}
+                            </div>
                         </div>
-                        <div className="flex justify-center">
-                            Go to shopping!
-                        </div>
-                    </div>
+                    ))}
+
                     <div className="absolute bottom-0 left-0 p-4">
                         <div className="flex items-center">
                             <div className="mr-4">
-                                <button type="button"
+                                <button onClick={() => setIsModalOpen(true)} type="button"
                                         className="rounded-full border border-primary-500 bg-primary-500 p-1.5 text-center text-xs font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                          className="h-4 w-4">
@@ -82,6 +188,33 @@ export default function Kanbans() {
                     </div>
                 </div>
             </div>
+            {isModalOpen && addTodoModal}
         </div>
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async(context) => {
+    const response = await fetch('http://localhost:3000/kanbans');
+
+    // if (!response.ok) {
+    //     return {
+    //         redirect: {
+    //             destination: '/auth/login',
+    //             permanent: false,
+    //         },
+    //     };
+    // }
+
+    const kanbans = await response.json();
+    const todos = kanbans.filter((kanban: IKanbans) => kanban.status === 0);
+    const inProgress = kanbans.filter((kanban: IKanbans) => kanban.status === 1);
+    const done = kanbans.filter((kanban: IKanbans) => kanban.status === 2);
+
+    return {
+        props: {
+            todos,
+            inProgress,
+            done,
+        },
+    };
 }
