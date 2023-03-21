@@ -64,19 +64,19 @@ export default function Login() {
     };
 
     return (
-        <div className="container items-center mx-auto max-w-md justify-center mt-[15rem]">
-            <form action="" className="space-y-5" onSubmit={onSubmit}>
-                {loginError && (
-                    <ErrorAlert message={loginError} onClick={() => setLoginError('')}></ErrorAlert>
-                )}
-                {loginSuccess && (
-                    <SuccessAlert message={loginSuccess} onClick={() => setLoginSuccess('')}></SuccessAlert>
-                )}
+        <div className="container items-center mx-auto max-w-md justify-center mt-[15rem] border-2 p-[10px] h-[320px]">
+            {loginError && (
+                <ErrorAlert message={loginError} onClick={() => setLoginError('')}></ErrorAlert>
+            )}
+            {loginSuccess && (
+                <SuccessAlert message={loginSuccess} onClick={() => setLoginSuccess('')}></SuccessAlert>
+            )}
+            <form action="" className="space-y-5 p-3" onSubmit={onSubmit}>
                 <div className="grid grid-cols-3 items-center">
                     <h2 className="col-span-2 col-start-2 text-3xl font-bold mb-5">Login</h2>
                 </div>
-                <FormInputItem label="username" value={username} onChange={(e) => setUsername(e.target.value)}></FormInputItem>
-                <FormInputItem label="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></FormInputItem>
+                <FormInputItem label="Username" value={username} onChange={(e) => setUsername(e.target.value)}></FormInputItem>
+                <FormInputItem label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></FormInputItem>
                 <FormButton text="Submit" isValid={isFormValid()}></FormButton>
             </form>
         </div>
