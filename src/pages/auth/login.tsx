@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import {FormButton} from "@/components/FormButton";
+import {FormInputItem} from "@/components/FormInputItem";
 
 interface LoginForm {
     username: string;
@@ -66,40 +68,9 @@ export default function Login() {
                 <div className="grid grid-cols-3 items-center">
                     <h2 className="col-span-2 col-start-2 text-3xl font-bold mb-5">Login</h2>
                 </div>
-                <div className="grid grid-cols-3 items-center">
-                    <label htmlFor="username"
-                           className="col-span-1 block text-sm font-medium text-gray-700">Name</label>
-                    <div className="col-span-2">
-                        <input id="username"
-                               value={username}
-                               onChange={(e) => setUsername(e.target.value)}
-                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
-                               placeholder="username"/>
-                    </div>
-                </div>
-                <div className="grid grid-cols-3 items-center">
-                    <label htmlFor="password"
-                           className="col-span-1 block text-sm font-medium text-gray-700">Password</label>
-                    <div className="col-span-2">
-                        <input type="password"
-                               id="password"
-                               value={password}
-                               onChange={(e) => setPassword(e.target.value)}
-                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
-                               placeholder="password"/>
-                    </div>
-                </div>
-                <div className="grid grid-cols-3 items-center">
-                    <div className="col-span-2 col-start-2">
-                        <button
-                            type="submit"
-                            disabled={!isFormValid()}
-                            className="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </div>
+                <FormInputItem label="username" value={username} onChange={(e) => setUsername(e.target.value)}></FormInputItem>
+                <FormInputItem label="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></FormInputItem>
+                <FormButton text="Submit" isValid={isFormValid()}></FormButton>
             </form>
         </div>
     );
