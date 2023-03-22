@@ -92,6 +92,12 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         </>
     )
 
+    const descriptionModal = (item: IKanbans) => (
+        <>
+
+        </>
+    )
+
     const isValid = () => {
         return name.trim() !== '' && description.trim() !== '';
     }
@@ -209,8 +215,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     )
 
     return (
-        <div className="container mx-auto h-[100%]">
-            <h1 className="text-2xl font-bold">Kanbans</h1>
+        <div className="container mx-auto">
             <div className="flex justify-evenly mt-20">
                 {kanbanInfo(todos, 'TO DO', true)}
                 {kanbanInfo(inProgress, 'IN PROGRESS')}

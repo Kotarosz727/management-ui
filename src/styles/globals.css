@@ -85,15 +85,18 @@
 /*  overflow-x: hidden;*/
 /*}*/
 
-/*body {*/
-/*  color: rgb(var(--foreground-rgb));*/
-/*  background: linear-gradient(*/
-/*      to bottom,*/
-/*      transparent,*/
-/*      rgb(var(--background-end-rgb))*/
-/*    )*/
-/*    rgb(var(--background-start-rgb));*/
-/*}*/
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: linear-gradient(0deg, #000000, #373D82);
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+}
+
 
 /*a {*/
 /*  color: inherit;*/
