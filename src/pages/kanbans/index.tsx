@@ -52,7 +52,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                 <div className="flex items-center">
                     <div className="mr-4">
                         <button onClick={() => setIsModalOpen(true)} type="button"
-                                className="rounded-full border border-primary-500 bg-primary-500 p-1.5 text-center text-xs font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300">
+                                className="rounded-full border border-custom-dark-blue-200 bg-custom-dark-blue-200 p-1.5 text-center text-xs font-medium text-white shadow-sm transition-all hover:border-custom-dark-blue-200 hover:bg-custom-dark-blue-200 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-custom-dark-blue-200 disabled:bg-custom-dark-blue-200">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                  className="h-4 w-4">
                                 <path
@@ -60,7 +60,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                             </svg>
                         </button>
                     </div>
-                    <div className="text-base not-italic font-bold">Add To Do</div>
+                    <div className="text-base not-italic font-bold text-white">Add To Do</div>
                 </div>
             </div>
         </>
@@ -68,8 +68,8 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
 
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
-            <div className="w-[331px] min-h-[700px] bg-gray-300 relative">
-                <div className="font-bold text-xl p-2">
+            <div className="w-[331px] min-h-[700px] bg-custom-dark-blue-100 relative rounded shadow-md">
+                <div className="font-bold text-xl p-3 text-white">
                     {title}
                 </div>
                 <div className="h-[600px] overflow-y-auto">
@@ -166,7 +166,8 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             <div className="h-100">
                 <div>
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
-                        <div className="mx-auto overflow-hidden rounded-lg bg-white shadow-xl w-[700px] sm:max-w-sm">
+                        <div className="fixed inset-0 bg-black opacity-25"></div>
+                        <div className="mx-auto overflow-hidden rounded-lg bg-white shadow-xl w-[700px] sm:max-w-sm z-10">
                             <div className="relative p-5">
                                 <div className="absolute right-0 top-0 p-2">
                                     <button onClick={() => setIsModalOpen(false)}>{closeIcon}</button>
@@ -203,7 +204,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                                 </div>
                                 <div className="mt-5 flex justify-end gap-3">
                                     <button disabled={!isValid()} type="button" onClick={() => addTodo()}
-                                            className="flex-1 rounded-lg border border-primary-500 bg-primary-500 px-4 py-2 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300">Add To Do
+                                            className="flex-1 rounded-lg border border-primary-500 bg-custom-dark-blue-200 px-4 py-2 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-custom-dark-blue-200 hover:bg-custom-dark-blue-200 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-indigo-300 disabled:bg-indigo-300">Add To Do
                                     </button>
                                 </div>
                             </div>
