@@ -2,6 +2,8 @@ import {GetServerSideProps} from "next";
 import cookie from "cookie";
 import {IKanbans} from "@/types/kanbans/types";
 import {useState} from "react";
+import {useCookies} from 'react-cookie';
+import {useRouter} from "next/router";
 
 interface KanbansProps {
     todos: IKanbans[];
@@ -15,6 +17,9 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     const [todos, setTodos] = useState(initialTodos);
     const [inProgress, setInProgress] = useState(initialInProgress);
     const [done, setDone] = useState(initialDone);
+    const [token, setToken] = useState('');
+    const [cookies] = useCookies(['user']);
+    const userCookie = cookies.user;
 
     const checkMarkIcon = (
         <>
@@ -60,7 +65,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                             </svg>
                         </button>
                     </div>
-                    <div className="text-base not-italic font-bold text-white">Add To Do</div>
+                    <div className="text-base not-italic font-bold text-white tracking-wider">Add To Do</div>
                 </div>
             </div>
         </>
@@ -69,7 +74,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
             <div className="w-[331px] min-h-[700px] bg-custom-dark-blue-100 relative rounded shadow-md">
-                <div className="font-bold text-xl p-3 text-white">
+                <div className="font-bold text-xl p-3 text-white tracking-wider">
                     {title}
                 </div>
                 <div className="h-[600px] overflow-y-auto">
@@ -106,7 +111,8 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         const res = await fetch('http://localhost:3000/kanbans', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${userCookie}`,
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 name,
@@ -114,8 +120,10 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             })
         })
 
+        console.log(res);
         if (!res.ok) {
-            throw new Error('Something went wrong');
+            setIsModalOpen(false);
+            throw new Error('Something went wrong with create');
         }
 
         setIsModalOpen(false);
@@ -123,7 +131,11 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     }
 
     const fetchKanbans = async () => {
-        const res = await fetch('http://localhost:3000/kanbans');
+        const res = await fetch('http://localhost:3000/kanbans', {
+            headers: {
+                Authorization: `Bearer ${userCookie}`,
+            },
+        });
         const kanbans = await res.json();
         setTodos(kanbans.filter((kanban: IKanbans) => kanban.status === 0));
         setInProgress(kanbans.filter((kanban: IKanbans) => kanban.status === 1));
@@ -227,17 +239,24 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async(context) => {
-    const response = await fetch('http://localhost:3000/kanbans');
+export const getServerSideProps: GetServerSideProps | undefined = async(context) => {
+    const { req } = context;
 
-    // if (!response.ok) {
-    //     return {
-    //         redirect: {
-    //             destination: '/auth/login',
-    //             permanent: false,
-    //         },
-    //     };
-    // }
+    const cookies = req.headers.cookie
+        ? cookie.parse(req.headers.cookie)
+        : {};
+
+    const token = cookies.user;
+
+    const response = await fetch('http://localhost:3000/kanbans', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Something went wrong');
+    }
 
     const kanbans = await response.json();
     const todos = kanbans.filter((kanban: IKanbans) => kanban.status === 0);

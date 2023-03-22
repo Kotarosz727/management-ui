@@ -62,15 +62,11 @@ export default function Login() {
             sameSite: true,
         })
 
-        setLoginSuccess('Login successful');
-
-        alert('Login successful')
-
         setUsername('');
         setPassword('');
         setLoading(false);
 
-        await router.push('/');
+        await router.push('/kanbans');
     };
 
     const isValid = () => {
@@ -100,7 +96,7 @@ export default function Login() {
             <div className="w-[500px] h-[417px] bg-custom-dark-blue-100 rounded-lg drop-shadow-lg">
                 <div className="flex flex-col items-center p-5">
                     <span>{iconMan}</span>
-                    <span className="font-bold text-3xl text-white mt-2">Login</span>
+                    <span className="font-bold text-3xl text-white mt-2 tracking-wide">Login</span>
                 </div>
                 <div className="flex flex-col items-center justify-center p-3">
                     <input type="text"
