@@ -77,6 +77,22 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         </>
     )
 
+    const prioritizedIcon = (
+        <div className="cursor-pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 21V4H14L14.4 6H20V16H13L12.6 14H7V21H5Z" fill="#F59E0B"/>
+            </svg>
+        </div>
+    )
+
+    const priorityIcon = (
+        <div className="cursor-pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 21V4H14L14.4 6H20V16H13L12.6 14H7V21H5Z" fill="#D9D9D9"/>
+            </svg>
+        </div>
+    )
+
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
             <div className="w-[331px] min-h-[720px] bg-custom-dark-blue-100 relative rounded shadow-md">
@@ -85,7 +101,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                 </div>
                 <div className="h-[600px] overflow-y-auto">
                     {items && items.map((item) => (
-                        <div key={item.id} className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto mt-6">
+                        <div key={item.id} className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto mt-6 relative">
                             <div className="flex justify-between items-center">
                                 {item.status !== 2 ? (
                                     <button onClick={() => changeStatus(item.id, ++item.status)}>{checkMarkIcon}</button>
@@ -94,6 +110,9 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                             </div>
                             <div onClick={() => openDetailModal(item)} className="flex justify-center cursor-pointer">
                                 {item.name}
+                            </div>
+                            <div className="flex justify-center left-0 absolute p-1 bottom-0">
+                                {item.status === 0 ? priorityIcon : null}
                             </div>
                         </div>
                     ))}
@@ -136,6 +155,12 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             },
         });
         const kanbans = await res.json();
+        kanbans.sort((a: IKanbans, b: IKanbans) => {
+            if (a.created_at > b.created_at) {
+                return -1;
+            }
+        });
+
         setTodos(kanbans.filter((kanban: IKanbans) => kanban.status === 0));
         setInProgress(kanbans.filter((kanban: IKanbans) => kanban.status === 1));
         setDone(kanbans.filter((kanban: IKanbans) => kanban.status === 2));
@@ -328,6 +353,13 @@ export const getServerSideProps: GetServerSideProps | undefined = async(context)
     }
 
     const kanbans = await response.json();
+    // sort by created_at desc
+    kanbans.sort((a: IKanbans, b: IKanbans) => {
+        if (a.created_at > b.created_at) {
+            return -1;
+        }
+    });
+
     const todos = kanbans.filter((kanban: IKanbans) => kanban.status === 0);
     const inProgress = kanbans.filter((kanban: IKanbans) => kanban.status === 1);
     const done = kanbans.filter((kanban: IKanbans) => kanban.status === 2);
