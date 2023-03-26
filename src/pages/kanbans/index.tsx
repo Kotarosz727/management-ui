@@ -60,11 +60,11 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
 
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
-            <div className="w-[331px] min-h-[720px] bg-custom-dark-blue-100 relative rounded shadow-md">
+            <div className="w-[350px] min-h-[720px] 2xl:min-h-[920px] bg-custom-dark-blue-100 relative rounded shadow-md">
                 <div className="font-bold text-xl p-3 text-white tracking-wider">
                     {title}
                 </div>
-                <div className="h-[600px] overflow-y-auto">
+                <div className="h-[600px] 2xl:min-h-[800px] overflow-y-auto">
                     {items && items.map((item) => (
                         <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
                             <div className="flex justify-between items-center p-1">
