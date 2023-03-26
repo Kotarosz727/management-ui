@@ -66,15 +66,15 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                 </div>
                 <div className="h-[600px] overflow-y-auto">
                     {items && items.map((item) => (
-                        <div key={item.id} className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto mt-6 relative">
+                        <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
                             <div className="flex justify-between items-center p-1">
                                 {item.status !== 2 ? (
                                     <button onClick={() => updateKanban(item.id, { status: ++item.status })}>{checkMarkIcon}</button>
                                 ) : null}
                                 <button onClick={() => deleteKanban(item.id)}>{deleteIcon}</button>
                             </div>
-                            <div onClick={() => openDetailModal(item)} className="flex justify-center cursor-pointer">
-                                {item.name}
+                            <div onClick={() => openDetailModal(item)} className="flex justify-center cursor-pointer p-2">
+                                {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
                             </div>
                             <div className="flex justify-center left-0 absolute bottom-0">
                                 {item.status !== 2 ? showPriority(item) : null}
@@ -225,6 +225,21 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         }
     }
 
+    const showDate = (item: IKanbans) => {
+        const createdDate = new Date(item.created_at).toLocaleDateString();
+        const updatedDate = new Date(item.updated_at).toLocaleDateString();
+        const status = item.status;
+
+        switch (status) {
+            case 0:
+            case 1:
+                return <span className="text-gray-500 text-sm">Created: {createdDate}</span>;
+            case 2:
+                return <span className="text-gray-500 text-sm">Done: {updatedDate}</span>;
+        }
+    }
+
+
     const detailModal = (
         <>
             <div className="h-100">
@@ -236,11 +251,14 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                                 <div className="text-bold text-3xl mt-1">
                                     {detail.name}
                                 </div>
-                                <div className="font-bold mt-8 mb-10">
+                                <div className="mt-8 mb-10">
                                     {detail.description}
                                 </div>
-                                <div className="absolute left-0 bottom-0 p-4">
-                                    {showIcon(detail.status)}
+                                <div className="absolute p-1 left-0 bottom-0">
+                                    <span>{showIcon(detail.status)}</span>
+                                </div>
+                                <div className="absolute p-2 right-0 bottom-0">
+                                    {showDate(detail)}
                                 </div>
                             </div>
                         </div>
