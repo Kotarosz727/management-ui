@@ -60,7 +60,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
 
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
-            <div className="w-[350px] min-h-[720px] 2xl:min-h-[920px] bg-custom-dark-blue-100 relative rounded shadow-md">
+            <div className="w-[350px] min-h-[720px] 2xl:min-h-[920px] bg-custom-dark-blue-100 relative rounded shadow-2xl">
                 <div className="font-bold text-xl p-3 text-white tracking-wider">
                     {title}
                 </div>
