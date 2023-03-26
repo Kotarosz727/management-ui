@@ -3,7 +3,7 @@ import cookie from "cookie";
 import {IKanbans} from "@/types/kanbans/types";
 import {useState} from "react";
 import {useCookies} from 'react-cookie';
-import {checkMarkIcon, deleteIcon, priorityIcon, prioritizedIcon, todoIcon, doingIcon, doneIcon} from "@/components/shared/Icons/Icons";
+import {checkMarkIcon, deleteIcon, priorityIcon, prioritizedIcon, todoIcon, doingIcon, doneIcon, returnIcon} from "@/components/shared/Icons/Icons";
 
 interface KanbansProps {
     todos: IKanbans[];
@@ -78,6 +78,9 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                             </div>
                             <div className="flex justify-center left-0 absolute bottom-0">
                                 {item.status !== 2 ? showPriority(item) : null}
+                            </div>
+                            <div className="flex justify-center right-0 absolute bottom-0 cursor-pointer" onClick={() => updateKanban(item.id, { status:0 })}>
+                                {item.status === 1 ? returnIcon : null}
                             </div>
                         </div>
                     ))}
