@@ -48,6 +48,16 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         </>
     )
 
+    const showPriority = (item: IKanbans) => (
+        <>
+            {item.prioritize ? (
+                <button onClick={() => updateKanban(item.id, { prioritize : 0 })}>{prioritizedIcon}</button>
+            ) : (
+                <button onClick={() => updateKanban(item.id, { prioritize: 1 })}>{priorityIcon}</button>
+            )}
+        </>
+    )
+
     const kanbanInfo = (items: IKanbans[], title:string, withNode = false) => (
         <>
             <div className="w-[331px] min-h-[720px] bg-custom-dark-blue-100 relative rounded shadow-md">
@@ -59,7 +69,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                         <div key={item.id} className="w-[290px] h-[87px] bg-white rounded shadow-lg mx-auto mt-6 relative">
                             <div className="flex justify-between items-center p-1">
                                 {item.status !== 2 ? (
-                                    <button onClick={() => changeStatus(item.id, ++item.status)}>{checkMarkIcon}</button>
+                                    <button onClick={() => updateKanban(item.id, { status: ++item.status })}>{checkMarkIcon}</button>
                                 ) : null}
                                 <button onClick={() => deleteKanban(item.id)}>{deleteIcon}</button>
                             </div>
@@ -67,7 +77,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                                 {item.name}
                             </div>
                             <div className="flex justify-center left-0 absolute bottom-0">
-                                {item.status === 0 ? priorityIcon : null}
+                                {item.status !== 2 ? showPriority(item) : null}
                             </div>
                         </div>
                     ))}
@@ -110,9 +120,12 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             },
         });
         const kanbans = await res.json();
+
         kanbans.sort((a: IKanbans, b: IKanbans) => {
-            if (a.created_at > b.created_at) {
-                return -1;
+            if (a.prioritize !== b.prioritize) {
+                return b.prioritize - a.prioritize;
+            } else {
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
             }
         });
 
@@ -121,11 +134,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         setDone(kanbans.filter((kanban: IKanbans) => kanban.status === 2));
     }
 
-    const changeStatus = async (id: string, status: number) => {
-        const payload = {
-            status: status
-        }
-
+    const updateKanban = async (id: string, payload: Partial<IKanbans>) => {
         const res = await fetch(`http://localhost:3000/kanbans/${id}`, {
             method: 'PATCH',
             headers: {
@@ -133,12 +142,13 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             },
             body: JSON.stringify(payload)
         })
-        const data = await res.json();
+
+        await res.json();
         await fetchKanbans();
     }
 
     const deleteKanban = async (id: string) => {
-        const res = await fetch(`http://localhost:3000/kanbans/${id}`, {
+        await fetch(`http://localhost:3000/kanbans/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -280,10 +290,12 @@ export const getServerSideProps: GetServerSideProps | undefined = async(context)
     }
 
     const kanbans = await response.json();
-    // sort by created_at desc
+
     kanbans.sort((a: IKanbans, b: IKanbans) => {
-        if (a.created_at > b.created_at) {
-            return -1;
+        if (a.prioritize !== b.prioritize) {
+            return b.prioritize - a.prioritize;
+        } else {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         }
     });
 
