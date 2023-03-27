@@ -73,7 +73,7 @@ export default function Login() {
     };
 
     return (
-        <div className="container items-center mx-auto max-w-md justify-center mt-[12rem] p-[10px] h-[320px]">
+        <div className="container mx-auto max-w-md mt-[12rem] p-[10px]">
             <div className="w-[500px] h-[417px] bg-custom-dark-blue-100 rounded-lg drop-shadow-lg">
                 <div className="flex flex-col items-center p-5">
                     <span>{iconMan}</span>
