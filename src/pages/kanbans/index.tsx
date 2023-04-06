@@ -254,7 +254,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
                                 <div className="text-bold text-3xl mt-1">
                                     {detail.name}
                                 </div>
-                                <div className="mt-8 mb-10">
+                                <div className="mt-8 mb-10 whitespace-pre-wrap">
                                     {detail.description}
                                 </div>
                                 <div className="absolute p-1 left-0 bottom-0">
