@@ -242,7 +242,6 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         }
     }
 
-
     const detailModal = (
         <>
             <div className="h-100">
