@@ -1,5 +1,5 @@
 type PriorityKey = 0 | 1;
-export interface IKanbans {
+export interface IKanban {
     id: string;
     name: string;
     description: string;

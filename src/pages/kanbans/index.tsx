@@ -1,15 +1,14 @@
 import {GetServerSideProps} from "next";
 import cookie from "cookie";
-import {IKanbans} from "@/types/kanbans/types";
+import {IKanban} from "@/types/kanbans/types";
 import {useState} from "react";
 import {useCookies} from 'react-cookie';
-import {checkMarkIcon, deleteIcon, priorityIcon, prioritizedIcon, todoIcon, doingIcon, doneIcon, returnIcon} from "@/components/shared/Icons/Icons";
 import KanbanListItem from "@/components/kanbans/kanbanListItem";
 
 interface KanbansProps {
-    todos: IKanbans[];
-    inProgress: IKanbans[];
-    done: IKanbans[];
+    todos: IKanban[];
+    inProgress: IKanban[];
+    done: IKanban[];
 }
 export default function Kanbans({ todos: initialTodos, inProgress: initialInProgress, done: initialDone }: KanbansProps) {
     const [todos, setTodos] = useState(initialTodos);
@@ -47,7 +46,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         });
         const kanbans = await res.json();
 
-        kanbans.sort((a: IKanbans, b: IKanbans) => {
+        kanbans.sort((a: IKanban, b: IKanban) => {
             if (a.prioritize !== b.prioritize) {
                 return b.prioritize - a.prioritize;
             } else {
@@ -55,12 +54,12 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             }
         });
 
-        setTodos(kanbans.filter((kanban: IKanbans) => kanban.status === 0));
-        setInProgress(kanbans.filter((kanban: IKanbans) => kanban.status === 1));
-        setDone(kanbans.filter((kanban: IKanbans) => kanban.status === 2));
+        setTodos(kanbans.filter((kanban: IKanban) => kanban.status === 0));
+        setInProgress(kanbans.filter((kanban: IKanban) => kanban.status === 1));
+        setDone(kanbans.filter((kanban: IKanban) => kanban.status === 2));
     }
 
-    const updateKanban = async (id: string, payload: Partial<IKanbans>) => {
+    const updateKanban = async (id: string, payload: Partial<IKanban>) => {
         const res = await fetch(`http://localhost:3000/kanbans/${id}`, {
             method: 'PATCH',
             headers: {
@@ -86,9 +85,9 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     return (
         <div className="container mx-auto">
             <div className="flex justify-evenly mt-20">
-                <KanbanListItem items={todos} title="TO DO" updateKanban={updateKanban} deleteKanban={deleteKanban} addToDO={addTodo}/>
-                <KanbanListItem items={inProgress} title="IN PROGRESS" updateKanban={updateKanban} deleteKanban={deleteKanban} addToDO={addTodo}/>
-                <KanbanListItem items={done} title="done" updateKanban={updateKanban} deleteKanban={deleteKanban} addToDO={addTodo}/>
+                <KanbanListItem items={todos} title="TO DO" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={inProgress} title="IN PROGRESS" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={done} title="done" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
             </div>
         </div>
     )
@@ -122,7 +121,7 @@ export const getServerSideProps: GetServerSideProps | undefined = async(context)
 
     const kanbans = await response.json();
 
-    kanbans.sort((a: IKanbans, b: IKanbans) => {
+    kanbans.sort((a: IKanban, b: IKanban) => {
         if (a.prioritize !== b.prioritize) {
             return b.prioritize - a.prioritize;
         } else {
@@ -130,9 +129,9 @@ export const getServerSideProps: GetServerSideProps | undefined = async(context)
         }
     });
 
-    const todos = kanbans.filter((kanban: IKanbans) => kanban.status === 0);
-    const inProgress = kanbans.filter((kanban: IKanbans) => kanban.status === 1);
-    const done = kanbans.filter((kanban: IKanbans) => kanban.status === 2);
+    const todos = kanbans.filter((kanban: IKanban) => kanban.status === 0);
+    const inProgress = kanbans.filter((kanban: IKanban) => kanban.status === 1);
+    const done = kanbans.filter((kanban: IKanban) => kanban.status === 2);
 
     return {
         props: {

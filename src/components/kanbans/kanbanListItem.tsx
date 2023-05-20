@@ -1,4 +1,4 @@
-import {IKanbans} from "@/types/kanbans/types";
+import {IKanban} from "@/types/kanbans/types";
 import {
     checkMarkIcon,
     deleteIcon, doingIcon, doneIcon,
@@ -10,16 +10,16 @@ import {
 import {useState} from "react";
 
 interface props {
-    items: IKanbans[],
+    items: IKanban[],
     title: string,
-    updateKanban: (id: string, payload: Partial<IKanbans>) => void,
+    updateKanban: (id: string, payload: Partial<IKanban>) => void,
     deleteKanban: (id: string) => void,
     addTodo: (name: string, description: string) => void
 }
 
 export default function KanbanListItem({items, title, updateKanban, deleteKanban, addTodo}: props) {
     const [detailModalOpen, setDetailModalOpen] = useState(false);
-    const [detail, setDetail] = useState({} as IKanbans);
+    const [detail, setDetail] = useState({} as IKanban);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -27,12 +27,12 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
     const isValid = () => {
         return name.trim() !== '' && description.trim() !== '';
     }
-    const openDetailModal = (kanban: IKanbans) => {
+    const openDetailModal = (kanban: IKanban) => {
         setDetailModalOpen(true);
         setDetail(kanban);
     }
 
-    const showPriority = (item: IKanbans) => (
+    const showPriority = (item: IKanban) => (
         <>
             {item.prioritize ? (
                 <button onClick={() => updateKanban(item.id, { prioritize : 0 })}>{prioritizedIcon}</button>
@@ -55,7 +55,7 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
         }
     }
 
-    const showDate = (item: IKanbans) => {
+    const showDate = (item: IKanban) => {
         const createdDate = new Date(item.created_at).toLocaleDateString();
         const updatedDate = new Date(item.updated_at).toLocaleDateString();
         const status = item.status;
