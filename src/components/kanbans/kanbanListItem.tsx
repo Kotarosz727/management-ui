@@ -180,7 +180,7 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
                         <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} showPriority={showPriority} />
                     ))}
                 </div>
-                {title === 'todo' ? addToDoButton : null}
+                {title === 'TO DO' ? addToDoButton : null}
             </div>
             <div>
                 {isModalOpen && addTodoModal}
