@@ -1,5 +1,5 @@
 import {checkMarkIcon, deleteIcon, returnIcon} from "@/components/shared/Icons/Icons";
-import {IKanban} from "@/types/kanbans/types";
+import {IKanban, StatusKey} from "@/types/kanbans/types";
 
 interface IKanbanItemProps {
     item: IKanban;
@@ -12,7 +12,7 @@ export default function KanbanItem ({item, updateKanban, deleteKanban, openDetai
     return (
         <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
             <div className="flex justify-between items-center p-1">
-                {item.status !== 2 ? (
+                {item.status !== StatusKey.DONE ? (
                     <button
                         onClick={() => updateKanban(item.id, {status: ++item.status})}>{checkMarkIcon}</button>
                 ) : null}
@@ -22,11 +22,11 @@ export default function KanbanItem ({item, updateKanban, deleteKanban, openDetai
                 {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
             </div>
             <div className="flex justify-center left-0 absolute bottom-0">
-                {item.status !== 2 ? showPriority(item) : null}
+                {item.status !== StatusKey.DONE ? showPriority(item) : null}
             </div>
             <div className="flex justify-center right-0 absolute bottom-0 cursor-pointer"
                  onClick={() => updateKanban(item.id, {status: 0})}>
-                {item.status === 1 ? returnIcon : null}
+                {item.status === StatusKey.DOING ? returnIcon : null}
             </div>
         </div>
     )

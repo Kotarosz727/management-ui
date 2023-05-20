@@ -10,3 +10,9 @@ export interface IKanban {
     updated_at: Date;
     prioritize: PriorityKey;
 }
+
+export const StatusKey = {
+    TODO: 0,
+    DOING: 1,
+    DONE: 2,
+} as const;
