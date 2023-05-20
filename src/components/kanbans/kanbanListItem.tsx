@@ -8,6 +8,7 @@ import {
     todoIcon
 } from "@/components/shared/Icons/Icons";
 import {useState} from "react";
+import KanbanItem from "./KanbanItem";
 
 interface props {
     items: IKanban[],
@@ -176,25 +177,7 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
                 </div>
                 <div className="h-[600px] 2xl:min-h-[800px] overflow-y-auto">
                     {items && items.map((item) => (
-                        <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
-                            <div className="flex justify-between items-center p-1">
-                                {item.status !== 2 ? (
-                                    <button
-                                        onClick={() => updateKanban(item.id, {status: ++item.status})}>{checkMarkIcon}</button>
-                                ) : null}
-                                <button onClick={() => deleteKanban(item.id)}>{deleteIcon}</button>
-                            </div>
-                            <div onClick={() => openDetailModal(item)} className="flex justify-center cursor-pointer p-2">
-                                {item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}
-                            </div>
-                            <div className="flex justify-center left-0 absolute bottom-0">
-                                {item.status !== 2 ? showPriority(item) : null}
-                            </div>
-                            <div className="flex justify-center right-0 absolute bottom-0 cursor-pointer"
-                                 onClick={() => updateKanban(item.id, {status: 0})}>
-                                {item.status === 1 ? returnIcon : null}
-                            </div>
-                        </div>
+                        <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} showPriority={showPriority} />
                     ))}
                 </div>
                 {title === 'todo' ? addToDoButton : null}
