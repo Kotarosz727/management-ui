@@ -33,16 +33,6 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
         setDetail(kanban);
     }
 
-    const showPriority = (item: IKanban) => (
-        <>
-            {item.prioritize ? (
-                <button onClick={() => updateKanban(item.id, { prioritize : 0 })}>{prioritizedIcon}</button>
-            ) : (
-                <button onClick={() => updateKanban(item.id, { prioritize: 1 })}>{priorityIcon}</button>
-            )}
-        </>
-    )
-
     const showIcon = (status: number) => {
         switch (status) {
             case 0:
@@ -177,7 +167,7 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
                 </div>
                 <div className="h-[600px] 2xl:min-h-[800px] overflow-y-auto">
                     {items && items.map((item) => (
-                        <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} showPriority={showPriority} />
+                        <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} />
                     ))}
                 </div>
                 {title === 'TO DO' ? addToDoButton : null}

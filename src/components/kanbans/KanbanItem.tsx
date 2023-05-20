@@ -1,4 +1,4 @@
-import {checkMarkIcon, deleteIcon, returnIcon} from "@/components/shared/Icons/Icons";
+import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "@/components/shared/Icons/Icons";
 import {IKanban, StatusKey} from "@/types/kanbans/types";
 
 interface IKanbanItemProps {
@@ -6,9 +6,18 @@ interface IKanbanItemProps {
     updateKanban: (id: string, data: any) => void;
     deleteKanban: (id: string) => void;
     openDetailModal: (item: IKanban) => void;
-    showPriority: (item: IKanban) => JSX.Element;
 }
-export default function KanbanItem ({item, updateKanban, deleteKanban, openDetailModal, showPriority}: IKanbanItemProps) {
+export default function KanbanItem ({item, updateKanban, deleteKanban, openDetailModal }: IKanbanItemProps) {
+    const showPriority = (item: IKanban) => (
+        <>
+            {item.prioritize ? (
+                <button onClick={() => updateKanban(item.id, { prioritize : 0 })}>{prioritizedIcon}</button>
+            ) : (
+                <button onClick={() => updateKanban(item.id, { prioritize: 1 })}>{priorityIcon}</button>
+            )}
+        </>
+    )
+
     return (
         <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
             <div className="flex justify-between items-center p-1">
