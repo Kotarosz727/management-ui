@@ -27,7 +27,7 @@ export default function KanbanItem ({item, updateKanban, deleteKanban, openDetai
     }
 
     return (
-        <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg mx-auto mt-6 relative">
+        <div key={item.id} className="w-[290px] h-[100px] bg-white rounded shadow-lg relative">
             <div className="flex justify-between items-center p-1">
                 {item.status !== StatusKey.DONE ? (
                     <KanbanIconButton action={updateKanban} icon={checkMarkIcon} args={[item.id, { status: item.status + 1 }]}/>

@@ -164,7 +164,9 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
                 </div>
                 <div className="h-[600px] 2xl:min-h-[800px] overflow-y-auto">
                     {items && items.map((item) => (
-                        <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} />
+                        <div key={item.id} className="mt-6 mx-auto w-[290px]">
+                            <KanbanItem key={item.id} item={item} updateKanban={updateKanban} deleteKanban={deleteKanban} openDetailModal={openDetailModal} />
+                        </div>
                     ))}
                 </div>
                 {title === 'TO DO' ? addToDoButton : null}
