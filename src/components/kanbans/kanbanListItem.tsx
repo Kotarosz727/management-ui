@@ -1,10 +1,7 @@
 import {IKanban} from "@/types/kanbans/types";
 import {
-    checkMarkIcon,
-    deleteIcon, doingIcon, doneIcon,
-    prioritizedIcon,
-    priorityIcon,
-    returnIcon,
+    doingIcon,
+    doneIcon,
     todoIcon
 } from "@/components/shared/Icons/Icons";
 import {useState} from "react";
