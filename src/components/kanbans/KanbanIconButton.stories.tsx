@@ -3,7 +3,7 @@ import KanbanIconButton from "./KanbanIconButton";
 import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "../shared/Icons/Icons";
 
 const meta: Meta<typeof KanbanIconButton> = {
-    title: 'KanbanIconButtons',
+    title: 'Kanbans/KanbanIconButtons',
     component: KanbanIconButton,
 }
 

@@ -4,7 +4,7 @@ import { StatusKey } from '@/types/kanbans/types';
 import { IKanban } from '@/types/kanbans/types';
 
 const meta: Meta<typeof KanbanItem> = {
-    title: 'KanbanItem',
+    title: 'Kanbans/KanbanItem',
     component: KanbanItem,
 };
 
