@@ -16,7 +16,7 @@ const itemData: IKanban = {
     id: '1',
     name: 'Test Task',
     status: StatusKey.TODO,
-    prioritize: 0,
+    prioritize: 1,
     description: 'This is a test task',
     userId: '1',
     created_at: new Date(),
@@ -28,7 +28,7 @@ const updateKanban = (id: string, data: any) => console.log(`Updating kanban ite
 const deleteKanban = (id: string) => console.log(`Deleting kanban item with id ${id}`);
 const openDetailModal = (item: IKanban) => console.log(`Opening detail modal for item with id ${item.id}`);
 
-export const Default: Story = {
+export const ToDo: Story = {
     args: {
         item: itemData,
         updateKanban,
@@ -36,3 +36,20 @@ export const Default: Story = {
         openDetailModal
     },
 };
+export const Doing: Story = {
+    args: {
+        item: { ...itemData, status: StatusKey.DOING },
+        updateKanban,
+        deleteKanban,
+        openDetailModal
+    },
+};
+
+export const Done: Story = {
+    args: {
+        item: { ...itemData, status: StatusKey.DONE },
+        updateKanban,
+        deleteKanban,
+        openDetailModal
+    }
+}
