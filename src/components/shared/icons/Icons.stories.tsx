@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 import { todoIcon, doingIcon, doneIcon, iconMan, alertIcon } from './Icons';
 
 const meta: Meta = {
@@ -7,7 +7,7 @@ const meta: Meta = {
 
 export default meta;
 
-export const Todo　= {
+export const TodoIcon　= {
     render: () => (
         <div>
             {todoIcon}
@@ -15,7 +15,7 @@ export const Todo　= {
     ),
 }
 
-export const Doing　= {
+export const DoingIcon　= {
     render: () => (
         <div>
             {doingIcon}
@@ -23,7 +23,7 @@ export const Doing　= {
     ),
 }
 
-export const Done　= {
+export const DoneIcon　= {
     render: () => (
         <div>
             {doneIcon}
@@ -31,7 +31,7 @@ export const Done　= {
     ),
 }
 
-export const IconMan　= {
+export const IconManIcon　= {
     render: () => (
         <div>
             {iconMan}
@@ -39,7 +39,7 @@ export const IconMan　= {
     ),
 }
 
-export const Alert　= {
+export const AlertIcon　= {
     render: () => (
         <div>
             {alertIcon}

@@ -1,4 +1,4 @@
-import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "@/components/shared/Icons/Icons";
+import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "@/components/shared/icons/Icons";
 import {IKanban, StatusKey} from "@/types/kanbans/types";
 import KanbanIconButton from "@/components/kanbans/KanbanIconButton";
 

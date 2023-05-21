@@ -3,7 +3,7 @@ import {
     doingIcon,
     doneIcon,
     todoIcon
-} from "@/components/shared/Icons/Icons";
+} from "@/components/shared/icons/Icons";
 import {useState} from "react";
 import KanbanItem from "./KanbanItem";
 

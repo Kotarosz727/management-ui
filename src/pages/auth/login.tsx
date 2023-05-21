@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {useCookies} from 'react-cookie';
 import { useRouter } from 'next/router';
-import { iconMan, alertIcon } from '@/components/shared/Icons/Icons';
+import { iconMan, alertIcon } from '@/components/shared/icons/Icons';
 
 interface LoginForm {
     username: string;

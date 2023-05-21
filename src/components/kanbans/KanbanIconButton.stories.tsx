@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import KanbanIconButton from "./KanbanIconButton";
-import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "../shared/Icons/Icons";
+import {checkMarkIcon, deleteIcon, prioritizedIcon, priorityIcon, returnIcon} from "../shared/icons/Icons";
 
 const meta: Meta<typeof KanbanIconButton> = {
     title: 'Kanbans/KanbanIconButtons',
