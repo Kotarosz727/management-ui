@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {ErrorAlert} from "@/components/shared/alert/ErrorAlert";
+import {ErrorAlert} from "@/components/shared/alerts/ErrorAlert";
 
 const meta: Meta = {
     title: 'Shared/Alert/ErrorAlert',
