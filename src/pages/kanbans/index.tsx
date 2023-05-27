@@ -85,9 +85,9 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     return (
         <div className="container mx-auto">
             <div className="flex justify-evenly mt-20">
-                <KanbanListItem items={todos} title="TO DO" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
-                <KanbanListItem items={inProgress} title="IN PROGRESS" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
-                <KanbanListItem items={done} title="DONE" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={todos} title="To Do" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={inProgress} title="In Progress" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={done} title="Done" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
             </div>
         </div>
     )
