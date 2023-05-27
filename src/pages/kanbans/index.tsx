@@ -87,7 +87,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             <div className="flex justify-evenly mt-20">
                 <KanbanListItem items={todos} title="TO DO" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
                 <KanbanListItem items={inProgress} title="IN PROGRESS" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
-                <KanbanListItem items={done} title="done" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
+                <KanbanListItem items={done} title="Done" updateKanban={updateKanban} deleteKanban={deleteKanban} addTodo={addTodo}/>
             </div>
         </div>
     )

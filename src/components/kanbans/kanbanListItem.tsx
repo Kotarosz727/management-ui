@@ -1,4 +1,4 @@
-import {IKanban} from "@/types/kanbans/types";
+import {IKanban, StatusKey} from "@/types/kanbans/types";
 import {
     doingIcon,
     doneIcon,
@@ -32,11 +32,11 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
 
     const showIcon = (status: number) => {
         switch (status) {
-            case 0:
+            case StatusKey.TODO:
                 return todoIcon;
-            case 1:
+            case StatusKey.DOING:
                 return doingIcon;
-            case 2:
+            case StatusKey.DONE:
                 return doneIcon;
             default:
                 return '';
@@ -49,10 +49,10 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
         const status = item.status;
 
         switch (status) {
-            case 0:
-            case 1:
+            case StatusKey.TODO:
+            case StatusKey.DOING:
                 return <span className="text-gray-500 text-sm">Created: {createdDate}</span>;
-            case 2:
+            case StatusKey.DONE:
                 return <span className="text-gray-500 text-sm">Done: {updatedDate}</span>;
         }
     }
