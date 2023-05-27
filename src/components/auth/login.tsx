@@ -86,8 +86,8 @@ export default function Login() {
                            className="block w-[300px] border-b-2 bg-custom-dark-blue-100 border-white-200 disabled:cursor-not-allowed disabled:text-gray-500 mt-10 text-white"
                            placeholder="username"/>
                     <input type="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
+                           onChange={(e) => setPassword(e.target.value)}
+                           value={password}
                            className="block w-[300px] border-b-2 bg-custom-dark-blue-100 border-white-200 disabled:cursor-not-allowed disabled:text-gray-500 mt-10 text-white"
                            placeholder="password"/>
                     <button onClick={() => onSubmit()} disabled={!isValid() || loading } className="bg-custom-dark-blue-200 font-bold text-lg text-white w-[150px] h-[40px] rounded-3xl mt-14 p-1 disabled:cursor-not-allowed disabled:border-indigo-300 disabled:bg-indigo-300">
