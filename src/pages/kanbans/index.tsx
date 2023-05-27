@@ -38,27 +38,6 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
         await fetchKanbans();
     }
 
-    const fetchKanbans = async () => {
-        const res = await fetch('http://localhost:3000/kanbans', {
-            headers: {
-                Authorization: `Bearer ${userCookie}`,
-            },
-        });
-        const kanbans = await res.json();
-
-        kanbans.sort((a: IKanban, b: IKanban) => {
-            if (a.prioritize !== b.prioritize) {
-                return b.prioritize - a.prioritize;
-            } else {
-                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            }
-        });
-
-        setTodos(kanbans.filter((kanban: IKanban) => kanban.status === 0));
-        setInProgress(kanbans.filter((kanban: IKanban) => kanban.status === 1));
-        setDone(kanbans.filter((kanban: IKanban) => kanban.status === 2));
-    }
-
     const updateKanban = async (id: string, payload: Partial<IKanban>) => {
         const res = await fetch(`http://localhost:3000/kanbans/${id}`, {
             method: 'PATCH',
@@ -80,6 +59,27 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
             },
         })
         await fetchKanbans();
+    }
+
+    const fetchKanbans = async () => {
+        const res = await fetch('http://localhost:3000/kanbans', {
+            headers: {
+                Authorization: `Bearer ${userCookie}`,
+            },
+        });
+        const kanbans = await res.json();
+
+        kanbans.sort((a: IKanban, b: IKanban) => {
+            if (a.prioritize !== b.prioritize) {
+                return b.prioritize - a.prioritize;
+            } else {
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            }
+        });
+
+        setTodos(kanbans.filter((kanban: IKanban) => kanban.status === 0));
+        setInProgress(kanbans.filter((kanban: IKanban) => kanban.status === 1));
+        setDone(kanbans.filter((kanban: IKanban) => kanban.status === 2));
     }
 
     return (
