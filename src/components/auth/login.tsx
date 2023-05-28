@@ -2,18 +2,10 @@ import React, { useState } from 'react';
 import {useCookies} from 'react-cookie';
 import { useRouter } from 'next/router';
 import { iconMan, alertIcon } from '@/components/shared/icons/Icons';
-
-interface LoginForm {
-    username: string;
-    password: string;
-}
-
-interface LoginResponse {
-    access_token: string;
-}
+import { LoginForm, LoginResponse } from '@/types/auth/types';
+import {login} from "@/lib/api/loginAPI";
 
 export default function Login() {
-    const loginUrl = 'http://localhost:3000/auth/login';
     const router = useRouter();
 
     const [cookie, setCookie] = useCookies(["user"])
@@ -21,7 +13,6 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
-    const [loginSuccess, setLoginSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async () => {
@@ -32,13 +23,7 @@ export default function Login() {
             password: password
         }
 
-        const response = await fetch(loginUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+        const response = await login(data);
 
         if (!response.ok) {
             setUsername('');
