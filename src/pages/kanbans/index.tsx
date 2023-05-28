@@ -4,6 +4,7 @@ import {IKanban} from "@/types/kanbans/types";
 import {useState} from "react";
 import {useCookies} from 'react-cookie';
 import KanbanListItem from "@/components/kanbans/kanbanListItem";
+import { index, create, update, destroy} from "@/lib/api/kanbanAPI";
 
 interface KanbansProps {
     todos: IKanban[];
@@ -19,17 +20,7 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     const userCookie = cookies.user;
 
     const addTodo = async (name:string, description:string) => {
-        const res = await fetch('http://localhost:3000/kanbans', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${userCookie}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name,
-                description
-            })
-        })
+        const res = await create(userCookie, name, description);
 
         if (!res.ok) {
             throw new Error('Something went wrong with create');
@@ -39,36 +30,33 @@ export default function Kanbans({ todos: initialTodos, inProgress: initialInProg
     }
 
     const updateKanban = async (id: string, payload: Partial<IKanban>) => {
-        const res = await fetch(`http://localhost:3000/kanbans/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
+        const res = await update(userCookie, id, payload);
 
-        await res.json();
+        if (!res.ok) {
+            throw new Error('Something went wrong with update');
+        }
+
         await fetchKanbans();
     }
 
     const deleteKanban = async (id: string) => {
-        await fetch(`http://localhost:3000/kanbans/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
+        const res = await destroy(userCookie, id);
+
+        if (!res.ok) {
+            throw new Error('Something went wrong with delete');
+        }
+
         await fetchKanbans();
     }
 
     const fetchKanbans = async () => {
-        const res = await fetch('http://localhost:3000/kanbans', {
-            headers: {
-                Authorization: `Bearer ${userCookie}`,
-            },
-        });
-        const kanbans = await res.json();
+        const res = await index(userCookie);
 
+        if (!res.ok) {
+            throw new Error('Something went wrong with index');
+        }
+
+        const kanbans: IKanban[] = await res.json();
         kanbans.sort((a: IKanban, b: IKanban) => {
             if (a.prioritize !== b.prioritize) {
                 return b.prioritize - a.prioritize;
@@ -102,11 +90,7 @@ export const getServerSideProps: GetServerSideProps | undefined = async(context)
 
     const token = cookies.user;
 
-    const response = await fetch('http://localhost:3000/kanbans', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    const response = await index(token);
 
     if (!response.ok) {
         if (response.status === 401) {

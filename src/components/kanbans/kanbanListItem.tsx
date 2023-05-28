@@ -35,7 +35,7 @@ export default function KanbanListItem({items, title, updateKanban, deleteKanban
                         </div>
                     ))}
                 </div>
-                {title === 'Todo' ? <KanbanAddToDoButton setAddTodoModalOpen={setAddTodoModalOpen}/> : null}
+                {title === 'To Do' ? <KanbanAddToDoButton setAddTodoModalOpen={setAddTodoModalOpen}/> : null}
             </div>
             <div>
                 {addModalOpen && <KanbanAddToDoModal setAddTodoModalOpen={setAddTodoModalOpen} addTodo={addTodo} />}
